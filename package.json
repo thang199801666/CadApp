@@ -1,0 +1,13 @@
+{
+  "name": "cadapp-viewer",
+  "version": "0.1.0",
+  "description": "Small 3D CAD viewer reorganized as a simple web app",
+  "private": true,
+  "scripts": {
+    "start": "npx http-server -c-1 -a localhost -p 3000",
+    "serve": "npm run start"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {}
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D CAD Viewer</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- Load Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Load STL Loader -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <!-- Load Orbit Controls for CAD-style navigation -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+    <!-- Application Menu Bar (CAD-style) -->
+    <div id="menu-bar" class="menu-bar">
+        <div class="menu-left">
+            <div class="menu" data-menu="file">File</div>
+            <div class="menu" data-menu="edit">Edit</div>
+            <div class="menu" data-menu="view">View</div>
+            <div class="menu" data-menu="tools">Tools</div>
+            <div class="menu" data-menu="help">Help</div>
+        </div>
+        <div class="menu-right">
+            <div class="app-title">3D Viewer</div>
+            <div id="settings-btn" class="menu" title="Settings">⚙</div>
+        </div>
+    </div>
+
+    <!-- Settings Panel (hidden by default) -->
+    <div id="settings-panel" class="settings-panel" aria-hidden="true">
+        <div class="settings-header">
+            <div class="settings-title">Viewer Settings</div>
+            <button id="settings-close" class="settings-close" aria-label="Close">✕</button>
+        </div>
+        <form id="settings-form" class="settings-form">
+            <label class="setting-row">
+                <span class="setting-label">Background</span>
+                <input type="color" id="setting-bgcolor" value="#8a8888">
+            </label>
+
+            <label class="setting-row">
+                <span class="setting-label">Font Family</span>
+                <select id="setting-font">
+                    <option value="Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif">System UI</option>
+                    <option value="'Courier New', Courier, monospace">Monospace</option>
+                    <option value="Georgia, serif">Serif</option>
+                    <option value="Tahoma, Geneva, sans-serif">Tahoma</option>
+                </select>
+            </label>
+
+            <label class="setting-row">
+                <span class="setting-label">Font Size (px)</span>
+                <input type="number" id="setting-fontsize" min="10" max="24" value="14">
+            </label>
+
+            <label class="setting-row">
+                <span class="setting-label">Mouse Mapping</span>
+                <select id="setting-mousemode">
+                    <option value="Default">Default</option>
+                    <option value="Inventor">Inventor</option>
+                    <option value="Blender">Blender</option>
+                </select>
+            </label>
+
+            <label class="setting-row">
+                <span class="setting-label">Feature Angle (deg)</span>
+                <input type="number" id="setting-featureangle" min="0" max="180" value="30" step="1">
+            </label>
+
+            <div class="settings-actions">
+                <button type="button" id="settings-apply" class="btn primary">Apply</button>
+                <button type="button" id="settings-reset" class="btn">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Ribbon removed -->
+
+    <div id="ui">
+        <!-- UI text removed per request; file input remains for File -> Open -->
+        <input type="file" id="file-input" accept=".stl,.obj,.ply,.dae,.gltf,.glb" style="display: none;">
+    </div>
+
+    <!-- Tree Model Panel -->
+    <div id="app-layout">
+        <div id="tree-panel">
+            <div class="tree-title" id="tree-title">Model</div>
+        </div>
+
+        <!-- Vertical splitter between tree and main view -->
+        <div id="vertical-splitter" class="splitter vertical" aria-hidden="true"></div>
+
+        <!-- Main 3D scene container -->
+        <div id="main-view" tabindex="0">
+            <!-- Coordinate Display (overlayed inside main view so transparency shows the 3D scene) -->
+            <div id="coordinates-display">
+                <canvas id="triad-canvas"></canvas>
+                <div class="coord-line coord-x">X: <span id="coord-x">0.00</span></div>
+                <div class="coord-line coord-y">Y: <span id="coord-y">0.00</span></div>
+                <div class="coord-line coord-z">Z: <span id="coord-z">0.00</span></div>
+            </div>
+        </div>
+
+        <!-- Horizontal splitter above console (spans both columns) -->
+        <div id="horizontal-splitter" class="splitter horizontal" aria-hidden="true"></div>
+
+        <!-- Console Interface Overlay (output only) -->
+        <div id="console-container">
+            <div id="console-output"></div>
+        </div>
+    </div>
+
+    <!-- (coordinates-display moved into #main-view) -->
+
+    <script type="module" defer src="src/js/controllers/appController.js"></script>
+    
+</body>
+</html>
